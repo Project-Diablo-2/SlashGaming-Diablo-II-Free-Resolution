@@ -51,46 +51,48 @@
 
 namespace sgd2fr::patches {
 
-void __cdecl Sgd2fr_D2Common_GetGlobalEquipmentSlotLayout(
-    std::uint32_t inventory_record_index,
-    std::uint32_t inventory_arrange_mode,
-    ::d2::EquipmentLayout* out_equipment_slot_layout,
-    std::uint32_t equipment_slot_index
-) {
-  // Original code, copies the values of the specified Global Inventory Grid
-  // into the output Inventory Grid.
-  unsigned int source_inventory_arrange_mode =
-      GetSourceInventoryArrangeMode();
+	void __cdecl Sgd2fr_D2Common_GetGlobalEquipmentSlotLayout(
+		std::uint32_t inventory_record_index,
+		std::uint32_t inventory_arrange_mode,
+		::d2::EquipmentLayout* out_equipment_slot_layout,
+		std::uint32_t equipment_slot_index
+	) {
+		// Original code, copies the values of the specified Global Inventory Grid
+		// into the output Inventory Grid.
+		unsigned int source_inventory_arrange_mode =
+			GetSourceInventoryArrangeMode();
 
-  ::d2::InventoryRecord_View global_inventory_txt_view(
-      ::d2::d2common::GetGlobalInventoryTxt()
-  );
-  ::d2::EquipmentLayout_View global_equipment_slot_layout_view(
-      global_inventory_txt_view[
-          inventory_record_index + (source_inventory_arrange_mode * 16)
-      ].GetEquipmentSlots()[equipment_slot_index]
-  );
+		::d2::InventoryRecord_View global_inventory_txt_view(
+			::d2::d2common::GetGlobalInventoryTxt()
+		);
+		unsigned int invRecCount = ::d2::d2common::GetGlobalInventoryTxtRecordsCount() / 2;
 
-  ::d2::EquipmentLayout_Wrapper out_equipment_slot_layout_wrapper(
-      out_equipment_slot_layout
-  );
-  out_equipment_slot_layout_wrapper.AssignMembers(
-      global_equipment_slot_layout_view
-  );
+		::d2::EquipmentLayout_View global_equipment_slot_layout_view(
+			global_inventory_txt_view[
+				inventory_record_index + (source_inventory_arrange_mode * invRecCount)
+	  ].GetEquipmentSlots()[equipment_slot_index]
+					);
 
-  // Do not adjust positions if the entries are empty, which use value -1.
-  constexpr int entry_empty_value = -1;
-  if (out_equipment_slot_layout_wrapper.GetHeight() == entry_empty_value
-      || out_equipment_slot_layout_wrapper.GetWidth() == entry_empty_value
-  ) {
-    return;
-  }
+		::d2::EquipmentLayout_Wrapper out_equipment_slot_layout_wrapper(
+			out_equipment_slot_layout
+		);
+		out_equipment_slot_layout_wrapper.AssignMembers(
+			global_equipment_slot_layout_view
+		);
 
-  // Adjustment code to ensure that the objects appear in the correct
-  // location.
-  RealignPositionFromCenter(
-      out_equipment_slot_layout_wrapper.GetPosition()
-  );
-}
+		// Do not adjust positions if the entries are empty, which use value -1.
+		constexpr int entry_empty_value = -1;
+		if (out_equipment_slot_layout_wrapper.GetHeight() == entry_empty_value
+			|| out_equipment_slot_layout_wrapper.GetWidth() == entry_empty_value
+			) {
+			return;
+		}
+
+		// Adjustment code to ensure that the objects appear in the correct
+		// location.
+		RealignPositionFromCenter(
+			out_equipment_slot_layout_wrapper.GetPosition()
+		);
+	}
 
 } // namespace sgd2fr::patches
