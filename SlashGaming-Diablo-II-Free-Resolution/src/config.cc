@@ -84,7 +84,7 @@ namespace sgd2fr::config {
 
 		// Resolution variables.
 		constexpr std::string_view kIngameResolutionsKey = "Ingame Resolutions";
-		constexpr std::array<std::string_view, 2> kDefaultIngameResolutions = {
+		constexpr std::array<std::string_view, 1> kDefaultIngameResolutions = {
 		  "1068x600"
 		};
 
@@ -710,7 +710,7 @@ namespace sgd2fr::config {
 			}
 		);
 
-		return main_menu_resolution;
+		return std::make_tuple(800, 600);
 	}
 
 	unsigned int GetIngameResolutionMode() {
