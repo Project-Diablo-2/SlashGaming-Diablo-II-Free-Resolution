@@ -85,7 +85,6 @@ namespace sgd2fr::config {
 		// Resolution variables.
 		constexpr std::string_view kIngameResolutionsKey = "Ingame Resolutions";
 		constexpr std::array<std::string_view, 2> kDefaultIngameResolutions = {
-		  "800x600",
 		  "1068x600"
 		};
 
@@ -93,7 +92,7 @@ namespace sgd2fr::config {
 		constexpr std::string_view kDefaultMainMenuResolution = "800x600";
 
 		constexpr std::string_view kIngameResolutionModeKey = "Ingame Resolution Mode";
-		constexpr unsigned int kDefaultIngameResolutionMode = 2;
+		constexpr unsigned int kDefaultIngameResolutionMode = 1;
 
 		// Custom MPQ
 		constexpr ::std::string_view kCustomMpqPathKey =
@@ -643,12 +642,12 @@ namespace sgd2fr::config {
 				resolution_str.substr(split_index + 1).data()
 			);
 
-			// Never go above 1068x600
-			if (resolution_width > 1068) {
+			// Only allow 1068x600
+			if (resolution_width != 1068) {
 				resolution_width = 1068;
 			}
 
-			if (resolution_height > 600) {
+			if (resolution_height != 600) {
 				resolution_height = 600;
 			}
 

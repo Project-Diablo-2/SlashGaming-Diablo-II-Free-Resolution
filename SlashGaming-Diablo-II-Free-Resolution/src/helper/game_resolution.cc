@@ -92,7 +92,6 @@ namespace sgd2fr {
 
 		const std::vector<std::tuple<int, int>>& SelectLocalOrOnlineResolutions() {
 			static const std::vector default_resolutions = {
-						kResolution800x600,
 						std::make_tuple(1068, 600)
 
 			};
